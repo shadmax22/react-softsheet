@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  /* background-color: black; */
+}
+
+.table-cont:focus-within {
+  /* outline: auto; */
+}
+
+.table-cont:focus-visible {
+  outline: none;
+}
+
+
+@layer components {
+  .table-main {
+    /* @apply */
+  }
+
+  .table-main tr {
+    @apply border-b bg-gray-800 border-gray-700 border-b bg-gray-800 border-gray-700
+  }
+
+  .table-main thead tr th {
+    background-color: #181818;
+    @apply px-6 py-3
+  }
+
+  .table-main tbody tr th {
+    @apply px-6 py-4 font-medium whitespace-nowrap text-white bg-black
+  }
+
+
+  .table-main tbody td {
+    @apply px-6 py-4 bg-black
+  }
+
+
+
+
+}

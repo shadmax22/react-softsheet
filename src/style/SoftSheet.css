@@ -1,0 +1,83 @@
+.softsheet-main_container {
+    position: relative;
+
+}
+
+.softsheet-main_container:focus-visible {
+    outline: none;
+}
+
+.softsheet-main_container .softsheet-main_table {
+    width: auto;
+}
+
+
+
+.softsheet-main_container .softsheet-main_table thead th {
+
+    border-bottom: 1px solid;
+    padding: 10px 30px;
+
+    position: sticky;
+    top: 0;
+    text-align: left;
+}
+
+.softsheet-main_container .softsheet-main_table tbody td {
+    padding: 12px 20px;
+
+}
+
+.softsheet-main_container .softsheet-main_table .softsheet_main-count-no {
+    width: auto;
+    padding: 1px 0px;
+}
+
+
+
+
+/* COLOR SCHEME */
+
+
+/* DARK TEMPLATE */
+
+.softsheet-main_container.softsheet-darkTemplate .softsheet-main_table thead th {
+    background-color: #181818;
+    color: white;
+    border-bottom-color: gray;
+}
+
+.softsheet-main_container.softsheet-darkTemplate .softsheet-main_table table tr {
+    border-bottom: 1px solid gray;
+}
+
+.softsheet-main_container.softsheet-darkTemplate .softsheet-main_table tbody td {
+    color: wheat;
+    background-color: #181818;
+}
+
+.softsheet-main_container.softsheet-darkTemplate .softsheet-main_table .softsheet-active_cell {
+    background: #2b2424;
+}
+
+/* WHITE TEMPLATE */
+
+.softsheet-main_container.softsheet-lightTemplate .softsheet-main_table thead th {
+    background-color: #f2f2f2;
+    color: gray;
+    font-weight: 300;
+    border-bottom-color: gray;
+}
+
+.softsheet-main_container.softsheet-lightTemplate .softsheet-main_table table tr {
+    border-bottom: 1px solid gray;
+}
+
+.softsheet-main_container.softsheet-lightTemplate .softsheet-main_table tbody td {
+    color: black;
+    background-color: white;
+}
+
+.softsheet-main_container.softsheet-lightTemplate .softsheet-main_table .softsheet-active_cell {
+    background: #f2f2f2;
+}
