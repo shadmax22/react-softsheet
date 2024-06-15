@@ -16,6 +16,13 @@ export interface ReflectProps {
   index: number;
   keyboard: KeyboardProps;
 }
+export interface FilterProps {
+  row: any;
+  col: any;
+  row_no: number;
+  index: number;
+  keyboard: KeyboardProps;
+}
 
 interface KeyboardProps {
   navigation: {
@@ -35,6 +42,15 @@ export interface ts_Table {
   reflect?: {
     [key: string]: (data: ReflectProps) => ReflectFunction | ReactElement;
   };
+  filter?: {
+    [key: string]: {
+      name: string;
+      type?: "select" | "select-date" | "search";
+      options?: { label: string; value: string | number }[];
+      view?: () => void;
+    };
+  };
+  template?: string;
 }
 export function Table(props: ts_Table) {
   return (

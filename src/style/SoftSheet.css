@@ -1,6 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
 .softsheet-main_container {
     position: relative;
-
+    font-family: sans-serif;
+    text-align: center;
 }
 
 .softsheet-main_container:focus-visible {
@@ -21,6 +27,8 @@
     position: sticky;
     top: 0;
     text-align: left;
+    font-size: 12px;
+    text-transform: uppercase;
 }
 
 .softsheet-main_container .softsheet-main_table tbody td {
@@ -28,11 +36,235 @@
 
 }
 
+.softsheet-main_container .softsheet-main_table tbody td:focus-visible {
+    outline: none;
+}
+
+.softsheet-main_container .softsheet-main_table tbody td * {
+    pointer-events: none !important;
+}
+
 .softsheet-main_container .softsheet-main_table .softsheet_main-count-no {
     width: auto;
     padding: 1px 0px;
 }
 
+.softsheet-main_container .softsheet-main_table tbody td.softsheet-active_cell {
+    position: relative;
+}
+
+.softsheet-main_container .softsheet-main_table tbody td.softsheet-active_cell * {
+    pointer-events: unset !important;
+}
+
+
+.softsheet-main_container .softsheet-main_table tbody td.softsheet-active_cell {
+    z-index: 1;
+}
+
+.softsheet-main_container .softsheet-main_table tbody td.softsheet-active_cell::before {
+    content: '';
+    position: absolute;
+
+    /* Start from outside the left */
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background: var(--bg-activeBck);
+    z-index: -1;
+    /* Desired background color */
+
+    /* Adjust duration as needed */
+}
+
+.softsheet-main_container .softsheet-main_table tbody td.softsheet-active_cell_anim-right::before {
+    animation: leftToRight 0.3s;
+}
+
+.softsheet-main_container .softsheet-main_table tbody td.softsheet-active_cell_anim-left::before {
+    animation: rightToLeft 0.3s;
+}
+
+.softsheet-main_container .softsheet-main_table tbody td.softsheet-active_cell_anim-up::before {
+    animation: downToUp 0.3s;
+}
+
+.softsheet-main_container .softsheet-main_table tbody td.softsheet-active_cell_anim-down::before {
+    animation: upToDown 0.3s;
+}
+
+.softsheet-main_container .softsheet-main_table thead tr.filter td .filterContainer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 3px;
+    flex-direction: column;
+}
+
+.softsheet-main_container .softsheet-main_table thead tr.filter .searchFilter {
+
+    padding: 4px 4px;
+    box-sizing: border-box;
+    width: 140px;
+
+    background: #ececec;
+    outline: none;
+    border: 0px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    flex-direction: column;
+
+}
+
+.softsheet-main_container .softsheet-main_table thead tr.filter .searchFilter .filter-input {
+    width: 100%;
+    height: 28px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+
+.softsheet-main_container .softsheet-main_table thead tr.filter td .searchFilter .chips {
+    font-size: 11px;
+    color: gray;
+    background-color: #f2f2f2;
+    border: 1px solid rgb(192, 192, 192);
+    border-radius: 20px;
+    padding: 3px 13px;
+}
+
+.softsheet-main_container .softsheet-main_table thead tr.filter td .searchFilter .filterIcon {
+    font-size: 11px;
+    color: gray;
+    padding: 3px 13px;
+    margin-left: auto;
+}
+
+.softsheet-main_container .softsheet-main_table thead tr.filter td .searchFilter .filterOptions-cont {
+    width: 100%;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.softsheet-main_container .softsheet-main_table thead tr.filter td .searchFilter .filterOptions-cont .filterOption-search {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 6px 0px;
+    padding-right: 6px;
+    font-size: 12px;
+    background-color: #f2f2f2;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    color: gray;
+    border-radius: 12px;
+
+}
+
+.softsheet-main_container .softsheet-main_table thead tr.filter td .searchFilter .filterOptions-cont .filterOptions-search-input {
+    outline: none;
+    width: 100%;
+    background-color: transparent;
+    border: 0px;
+    padding: 0px 12px;
+    box-sizing: border-box;
+    font-size: 11px;
+}
+
+.softsheet-main_container .softsheet-main_table thead tr.filter td .searchFilter .filterOptions-cont .filterOption-search .searchIcon {
+    margin-left: auto;
+}
+
+.filterOption-scroller {
+    overflow-y: scroll;
+}
+
+.filterOption-scroller::-webkit-scrollbar {
+    width: 2px;
+    /* Width of the scrollbar */
+}
+
+/* Scrollbar track */
+.filterOption-scroller::-webkit-scrollbar-track {
+    background: transparent;
+    /* Background of the scrollbar track */
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    /* Color of the scrollbar thumb */
+    border-radius: 10px;
+    /* Rounded corners for the scrollbar thumb */
+    border: 2px solid #757575;
+    /* Add a border to create spacing effect */
+}
+
+.softsheet-main_container .softsheet-main_table thead tr.filter td .searchFilter .filterOptions-cont .filterOption-list {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 6px 12px;
+    font-size: 12px;
+    background-color: #f2f2f2;
+    display: flex;
+    justify-content: start;
+    color: gray;
+    border-radius: 12px;
+
+}
+
+@keyframes leftToRight {
+    from {
+        opacity: 0;
+        left: -20px;
+    }
+
+    to {
+        opacity: 1;
+        left: 0;
+    }
+}
+
+@keyframes rightToLeft {
+    from {
+        opacity: 0;
+        left: 20px;
+    }
+
+    to {
+        opacity: 1;
+        left: 0;
+    }
+}
+
+@keyframes downToUp {
+    from {
+        opacity: 0;
+        top: 20px;
+    }
+
+    to {
+        opacity: 1;
+        top: 0;
+    }
+}
+
+@keyframes upToDown {
+    from {
+        opacity: 0;
+        top: -20px;
+    }
+
+    to {
+        opacity: 1;
+        top: 0;
+    }
+}
 
 
 
@@ -41,43 +273,46 @@
 
 /* DARK TEMPLATE */
 
-.softsheet-main_container.softsheet-darkTemplate .softsheet-main_table thead th {
-    background-color: #181818;
+.softsheet-main_container.softsheet-template-darkTemplate .softsheet-main_table thead th {
+    background-color: #000000;
     color: white;
     border-bottom-color: gray;
 }
 
-.softsheet-main_container.softsheet-darkTemplate .softsheet-main_table table tr {
+.softsheet-main_container.softsheet-template-darkTemplate .softsheet-main_table table tr {
     border-bottom: 1px solid gray;
 }
 
-.softsheet-main_container.softsheet-darkTemplate .softsheet-main_table tbody td {
+.softsheet-main_container.softsheet-template-darkTemplate .softsheet-main_table tbody td {
     color: wheat;
-    background-color: #181818;
+    background-color: #463e3e;
 }
 
-.softsheet-main_container.softsheet-darkTemplate .softsheet-main_table .softsheet-active_cell {
-    background: #2b2424;
+.softsheet-main_container.softsheet-template-darkTemplate .softsheet-main_table .softsheet-active_cell {
+    /* background: #282828; */
+    --bg-activeBck: black;
 }
 
 /* WHITE TEMPLATE */
 
-.softsheet-main_container.softsheet-lightTemplate .softsheet-main_table thead th {
+.softsheet-main_container.softsheet-template-lightTemplate .softsheet-main_table thead th {
     background-color: #f2f2f2;
     color: gray;
     font-weight: 300;
     border-bottom-color: gray;
 }
 
-.softsheet-main_container.softsheet-lightTemplate .softsheet-main_table table tr {
+.softsheet-main_container.softsheet-template-lightTemplate .softsheet-main_table table tr {
     border-bottom: 1px solid gray;
 }
 
-.softsheet-main_container.softsheet-lightTemplate .softsheet-main_table tbody td {
+.softsheet-main_container.softsheet-template-lightTemplate .softsheet-main_table tbody td {
     color: black;
     background-color: white;
+
 }
 
-.softsheet-main_container.softsheet-lightTemplate .softsheet-main_table .softsheet-active_cell {
-    background: #f2f2f2;
+.softsheet-main_container.softsheet-template-lightTemplate .softsheet-main_table .softsheet-active_cell {
+    --bg-activeBck: #cfcece;
+
 }

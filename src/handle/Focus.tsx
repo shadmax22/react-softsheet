@@ -4,18 +4,20 @@ import { TABLE_DATA, TABLE_STATE } from "../utils/states";
 export function __FOCUS_HANDLER({
   td_ref,
   table_ref,
+  tableId,
 }: {
   td_ref: any;
   table_ref: any;
+  tableId: number;
 }) {
   return () => {
-    let __TABLE_STATE = TABLE_STATE();
-
+    let __TABLE_STATE = TABLE_STATE({ tableId });
     let data: TABLE_DATA = __TABLE_STATE?.get();
 
     let CurrentCell = td_ref.current[
       data.activeCells.col + data.activeCells.row * data.maxColumnLength
     ] as any;
+
     if (data?.prevActiveCells) {
       let PrevCell = td_ref.current[
         data?.prevActiveCells?.col +
@@ -30,27 +32,29 @@ export function __FOCUS_HANDLER({
       }
     }
 
-    let FOCUSABLE_ELEMENT = CurrentCell.querySelector("input, button");
+    if (CurrentCell) {
+      let FOCUSABLE_ELEMENT = CurrentCell.querySelector("input, button");
 
-    if (FOCUSABLE_ELEMENT) {
-      FOCUSABLE_ELEMENT.focus();
+      if (FOCUSABLE_ELEMENT) {
+        FOCUSABLE_ELEMENT.focus();
 
-      // const BLUR_APPLIER = (w: any) => {
-      //   console.log(w.target.value);
-      // };
+        // const BLUR_APPLIER = (w: any) => {
+        //   console.log(w.target.value);
+        // };
 
-      // DISABLE KEYBOARD EVENT AND FOCUS IN ELEMENT
+        // DISABLE KEYBOARD EVENT AND FOCUS IN ELEMENT
 
-      if (FOCUSABLE_ELEMENT.value != "") {
-        __TABLE_STATE.upsert(set(false, "keyboard_events"));
-        table_ref.current.focus();
+        if (FOCUSABLE_ELEMENT.value != "") {
+          __TABLE_STATE.upsert(set(false, "keyboard_events"));
+          table_ref.current.focus();
+        }
       }
     }
   };
 }
 
-export function setFocus(ref: any) {
-  let __TABLE_STATE = TABLE_STATE();
+export function setFocus(ref: any, tableId: number) {
+  let __TABLE_STATE = TABLE_STATE({ tableId });
 
   let data: TABLE_DATA = __TABLE_STATE?.get();
 
@@ -60,9 +64,11 @@ export function setFocus(ref: any) {
         data?.prevActiveCells?.row * data.maxColumnLength
     ] as any;
 
-    let BLURABLE_ELEMENT = PrevCell.querySelector("input, button");
-    if (BLURABLE_ELEMENT) {
-      __TABLE_STATE.upsert(set(true, "keyboard_events"));
+    if (PrevCell) {
+      let BLURABLE_ELEMENT = PrevCell.querySelector("input, button");
+      if (BLURABLE_ELEMENT) {
+        __TABLE_STATE.upsert(set(true, "keyboard_events"));
+      }
     }
   }
 }

@@ -14,12 +14,13 @@ export interface TABLE_DATA {
   prevActiveCells?: {
     row: number;
     col: number;
+    type: string;
   };
 }
 
-export const TABLE_STATE = (data?: { initialLoad?: any }) =>
+export const TABLE_STATE = (data: { initialLoad?: any; tableId: number }) =>
   useThis(
-    "table_state",
+    "table_state_" + data?.tableId,
     data?.initialLoad
       ? {
           activeCells: {

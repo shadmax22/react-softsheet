@@ -1,7 +1,7 @@
 import { TABLE_DATA, TABLE_STATE } from "../utils/states";
 
-export function DispatchEvent(td_ref: any, key: any) {
-  let __TABLE_STATE = TABLE_STATE();
+export function DispatchEvent(td_ref: any, key: any, tableId: number) {
+  let __TABLE_STATE = TABLE_STATE({ tableId });
 
   let data: TABLE_DATA = __TABLE_STATE?.get();
 

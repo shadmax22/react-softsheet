@@ -1,25 +1,38 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { __KEYDOWN_HANDLER } from "./handle/Keydown";
 import { __BLUR_HANDLER, trackBlurablity } from "./handle/Blur";
 import { __FOCUS_HANDLER } from "./handle/Focus";
 import { TABLE_DATA, TABLE_STATE } from "./utils/states";
-import { ReflectFunction, ts_Table } from "./Table";
+import { ts_Table } from "./Table";
 import { setClass } from "./utils/ease";
 
 import "./style/SoftSheet.css";
 import { down, left, right, setCellActive, up } from "./keyevents/AllEvents";
 import { set } from "js-upsert";
 
+import { SelectFilter } from "./components/Filters/Select";
+
 export function TableContainer(props: ts_Table) {
-  let { header, data, reflect } = props;
+  let [tableId, setTableId] = useState(0);
+
+  useEffect(() => {
+    //@ts-ignore
+    setTableId(Math.ceil(Math.random() * 100000));
+  }, []);
+
   let Ref = useRef<HTMLTableElement>(null);
   let TD_REF = useRef([]);
+
+  let { header, data, reflect } = props;
+
+  if (!data || !header) return <></>;
 
   let __TABLE_STATE = TABLE_STATE({
     initialLoad: {
       maxRowLength: data.length,
       maxColumnLength: Object.keys(header).length,
     },
+    tableId,
   });
 
   let TABLE_DATA: TABLE_DATA = __TABLE_STATE.get();
@@ -27,18 +40,18 @@ export function TableContainer(props: ts_Table) {
   const handleFocus = __FOCUS_HANDLER({
     td_ref: TD_REF,
     table_ref: Ref,
+    tableId,
   });
 
-  const handleKeyDown = __KEYDOWN_HANDLER(TD_REF);
+  const handleKeyDown = __KEYDOWN_HANDLER(TD_REF, tableId);
 
   let refSetter = (
     el: any,
     listener: any = null,
-    thisCell: { row: number; col: number }
+    thisCell: { row: number; col: number; tableId: number }
   ) => {
-    // @ts-ignore
-    if (el && !TD_REF.current.includes(el)) {
-      el.addEventListener("keydown", trackBlurablity);
+    if (el && !TD_REF.current.includes(el as never)) {
+      el.addEventListener("keydown", (e: any) => trackBlurablity(e, tableId));
       el.addEventListener("click", () => {
         setCellActive(thisCell);
       });
@@ -51,8 +64,15 @@ export function TableContainer(props: ts_Table) {
   };
 
   useEffect(() => {
-    __TABLE_STATE.upsert({ data: set(props) });
-  }, [props]);
+    __TABLE_STATE.upsert({
+      maxRowLength: set(data.length),
+    });
+  }, [data.length]);
+  useEffect(() => {
+    __TABLE_STATE.upsert({
+      maxColumnLength: set(Object.keys(header).length),
+    });
+  }, [Object.keys(header).length]);
 
   useEffect(() => {
     handleFocus();
@@ -63,13 +83,13 @@ export function TableContainer(props: ts_Table) {
       handleFocus();
     }
   }, []);
-
+  if (!tableId) return <></>;
   return (
     <>
       <div
         className={setClass(
           "softsheet-main_container",
-          "softsheet-lightTemplate"
+          `softsheet-template-${props?.template ?? "lightTemplate"}`
         )}
         onKeyDown={handleKeyDown}
         // onBlur={handleBlur}
@@ -92,6 +112,16 @@ export function TableContainer(props: ts_Table) {
                 );
               })}
             </tr>
+
+            {/* <tr className="filter">
+              <td></td>
+              <td>
+                <SelectFilter></SelectFilter>
+              </td>
+              <td>
+                <SelectFilter></SelectFilter>
+              </td>
+            </tr> */}
           </thead>
           <tbody>
             {data?.length == 0 && (
@@ -118,13 +148,16 @@ export function TableContainer(props: ts_Table) {
                         row_no: RowNumber + 1,
                         keyboard: {
                           navigation: {
-                            up,
-                            down,
-                            left,
-                            right,
+                            up: () => up(tableId),
+                            down: () => down(tableId),
+                            left: () => left(tableId),
+                            right: () => right(tableId),
                           },
                           cursor: {
-                            setActive: setCellActive,
+                            setActive: (props: {
+                              row?: number;
+                              col?: number;
+                            }) => setCellActive({ ...props, tableId }),
                           },
                         },
                       };
@@ -140,8 +173,10 @@ export function TableContainer(props: ts_Table) {
                         ? React.isValidElement(REFLECT_FUNCTION)
                         : false;
 
-                      if (IS_REFLECT_AVAILABLE && !IS_REFLECT_REACT)
-                        REFLECT_FUNCTION = REFLECT_FUNCTION as ReflectFunction;
+                      const IS_REFLECT_VIEW_PROVIDED = (attr: string) =>
+                        IS_REFLECT_AVAILABLE &&
+                        !IS_REFLECT_REACT &&
+                        (REFLECT_FUNCTION[attr] ?? false);
 
                       // const REFLECT =
                       //   reflect && (reflect ?? {})[e] // CHECK IF REFLECT AVAILABLE & REFLECT IS EXECUTABLE
@@ -154,20 +189,27 @@ export function TableContainer(props: ts_Table) {
                             ref={(e: any) =>
                               refSetter(
                                 e,
-                                IS_REFLECT_AVAILABLE &&
-                                  !IS_REFLECT_REACT &&
-                                  REFLECT_FUNCTION?.listener
+                                IS_REFLECT_VIEW_PROVIDED("listener")
                                   ? REFLECT_FUNCTION?.listener
                                   : null,
-                                { row: RowNumber, col: i }
+                                { row: RowNumber, col: i, tableId }
                               )
                             }
-                            className={
+                            className={setClass(
                               RowNumber == TABLE_DATA.activeCells.row &&
-                              i == TABLE_DATA.activeCells.col
-                                ? "softsheet-active_cell"
+                                i == TABLE_DATA.activeCells.col
+                                ? `softsheet-active_cell softsheet-active_cell_anim-${TABLE_DATA?.prevActiveCells?.type ?? ""}`
+                                : "",
+                              // IF CELL CLASS PROVIDED BY USER
+                              IS_REFLECT_VIEW_PROVIDED("cellClass")
+                                ? REFLECT_FUNCTION?.cellClass
                                 : ""
-                            }
+                            )}
+                            // IF CELL STYLE PROVIDED BY USER
+
+                            {...(IS_REFLECT_VIEW_PROVIDED("cellStyle")
+                              ? { style: REFLECT_FUNCTION?.cellStyle }
+                              : {})}
                             autoFocus={
                               RowNumber == TABLE_DATA.activeCells.row &&
                               i == TABLE_DATA.activeCells.col

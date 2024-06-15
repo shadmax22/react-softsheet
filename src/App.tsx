@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-import "./App.css";
 import Select from "react-select";
 import { ReflectProps, Table } from "./Table";
 
@@ -46,6 +45,12 @@ function App() {
 
   return (
     <>
+      {/* <Table
+        header={HEADER}
+        template="darkTemplate"
+        data={DATA}
+        reflect={Reflect}
+      ></Table> */}
       <Table header={HEADER} data={DATA} reflect={Reflect}></Table>
     </>
   );
