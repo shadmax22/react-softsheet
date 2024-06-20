@@ -1,16 +1,16 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { ReflectProps, Table } from "../Table";
+import { SoftSheet } from "../Table";
 import { fn } from "@storybook/test";
 
 const meta = {
   title: "Example/Table",
-  component: Table,
+  component: SoftSheet,
   parameters: {
     layout: "centered",
   },
   tags: ["autodocs"],
-} satisfies Meta<typeof Table>;
+} satisfies Meta<typeof SoftSheet>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -31,7 +31,7 @@ const reflectDatas = {
   ...basicDatas,
 
   reflect: {
-    name: fn((v: ReflectProps) => {
+    name: fn(() => {
       return {
         view: <h1>Green</h1>,
         cellStyle: { color: "red" },

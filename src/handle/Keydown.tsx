@@ -1,10 +1,11 @@
 import React from "react";
-import { TABLE_STATE } from "../utils/states";
+import { STATIC_TABLE_STATE } from "../utils/states";
 import { down, keyEnabled, left, right, up } from "../keyevents/AllEvents";
 import { DispatchEvent } from "./DispatchEvent";
+import { setFocus } from "./Focus";
 
 export function __KEYDOWN_HANDLER(ref: any, tableId: number) {
-  let __TABLE_STATE = TABLE_STATE({ tableId });
+  let __TABLE_STATE = STATIC_TABLE_STATE({ tableId });
 
   let { maxColumnLength, maxRowLength } = __TABLE_STATE?.get();
 
@@ -32,10 +33,15 @@ export function __KEYDOWN_HANDLER(ref: any, tableId: number) {
         break;
 
       case "Escape":
-        keyEnabled(false, tableId);
+        keyEnabled(true, tableId);
         break;
       case "Enter":
-        right(tableId);
+        let is_contunable = setFocus(ref, tableId);
+
+        if (is_contunable) {
+          right(tableId);
+        }
+
         // keyEnabled((v: any) => (v ? !v : v));
 
         break;

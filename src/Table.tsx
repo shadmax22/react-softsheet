@@ -1,8 +1,9 @@
 import { ThisProvider } from "react-usethis/thisProvider";
 import { TableContainer } from "./TableContainer";
-import { ReactElement } from "react";
+import { createContext, CSSProperties, ReactElement } from "react";
 import { setCellActive } from "./keyevents/AllEvents";
 
+import "./style/SoftSheet.css";
 export interface ReflectFunction {
   cellClass?: string;
   cellStyle?: any;
@@ -51,12 +52,37 @@ export interface ts_Table {
     };
   };
   template?: string;
+  style?: CSSProperties;
+  autoFocus?: boolean;
+  className?: string;
+  // props?: {
+  //   "softsheet-main_container"?: React.DetailedHTMLProps<
+  //     React.HTMLAttributes<HTMLDivElement>,
+  //     HTMLDivElement
+  //   >;
+  //   "softsheet-main_table"?: React.DetailedHTMLProps<
+  //     React.TableHTMLAttributes<HTMLTableElement>,
+  //     HTMLTableElement
+  //   >;
+  //   "softsheet-main_table_thead"?: React.DetailedHTMLProps<
+  //     React.HTMLAttributes<HTMLTableSectionElement>,
+  //     HTMLTableSectionElement
+  //   >;
+  //   "softsheet-main_table_tbody"?: React.DetailedHTMLProps<
+  //     React.HTMLAttributes<HTMLTableSectionElement>,
+  //     HTMLTableSectionElement
+  //   >;
+  // };
 }
-export function Table(props: ts_Table) {
+export const GlobalDatas = createContext({});
+export function SoftSheet(props: ts_Table) {
+  const _GLOBAL_DATA_PROVIDED = { style: props?.style ?? {} };
   return (
     <>
       <ThisProvider>
-        <TableContainer {...props}></TableContainer>
+        <GlobalDatas.Provider value={_GLOBAL_DATA_PROVIDED}>
+          <TableContainer {...props}></TableContainer>
+        </GlobalDatas.Provider>
       </ThisProvider>
     </>
   );

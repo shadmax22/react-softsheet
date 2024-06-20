@@ -1,5 +1,5 @@
 import { set } from "js-upsert";
-import { TABLE_DATA, TABLE_STATE } from "../utils/states";
+import { TABLE_DATA, STATIC_TABLE_STATE } from "../utils/states";
 
 export interface setCellActive {
   row?: any;
@@ -10,7 +10,7 @@ export function setCellActive({
   col,
   tableId,
 }: setCellActive & { tableId: number }) {
-  let __TABLE_STATE = TABLE_STATE({ tableId });
+  let __TABLE_STATE = STATIC_TABLE_STATE({ tableId });
 
   let DETERMINE_MODE = (
     row: { prev: number; current: number },
@@ -64,7 +64,7 @@ export function setCellActive({
   __TABLE_STATE.upsert(n);
 }
 export function left(tableId: number) {
-  let __TABLE_STATE = TABLE_STATE({ tableId });
+  let __TABLE_STATE = STATIC_TABLE_STATE({ tableId });
 
   let data: TABLE_DATA = __TABLE_STATE?.get();
   let { maxColumnLength } = data;
@@ -83,7 +83,7 @@ export function left(tableId: number) {
   }
 }
 export function right(tableId: number) {
-  let __TABLE_STATE = TABLE_STATE({ tableId });
+  let __TABLE_STATE = STATIC_TABLE_STATE({ tableId });
 
   let data: TABLE_DATA = __TABLE_STATE?.get();
   let { maxColumnLength, maxRowLength } = data;
@@ -104,7 +104,7 @@ export function right(tableId: number) {
 }
 
 export function down(tableId: number) {
-  let __TABLE_STATE = TABLE_STATE({ tableId });
+  let __TABLE_STATE = STATIC_TABLE_STATE({ tableId });
 
   let data: TABLE_DATA = __TABLE_STATE?.get();
 
@@ -121,7 +121,7 @@ export function down(tableId: number) {
   }
 }
 export function up(tableId: number) {
-  let __TABLE_STATE = TABLE_STATE({ tableId });
+  let __TABLE_STATE = STATIC_TABLE_STATE({ tableId });
 
   let data: TABLE_DATA = __TABLE_STATE?.get();
   let { maxRowLength } = data;
@@ -139,7 +139,7 @@ export function up(tableId: number) {
 }
 
 export function keyEnabled(stat: any, tableId: number) {
-  let __TABLE_STATE = TABLE_STATE({ tableId });
+  let __TABLE_STATE = STATIC_TABLE_STATE({ tableId });
 
   __TABLE_STATE.upsert(set(stat, "keyboard_events"));
 }

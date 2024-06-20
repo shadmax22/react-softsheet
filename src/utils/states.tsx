@@ -1,4 +1,4 @@
-import { useThis } from "react-usethis";
+import { getThis, useThis } from "react-usethis";
 import { ts_Table } from "../Table";
 
 export interface TABLE_DATA {
@@ -36,3 +36,5 @@ export const TABLE_STATE = (data: { initialLoad?: any; tableId: number }) =>
         }
       : null
   );
+export const STATIC_TABLE_STATE = (data: { tableId: number }) =>
+  getThis("table_state_" + data?.tableId);

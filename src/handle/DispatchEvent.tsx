@@ -1,7 +1,7 @@
-import { TABLE_DATA, TABLE_STATE } from "../utils/states";
+import { STATIC_TABLE_STATE, TABLE_DATA } from "../utils/states";
 
 export function DispatchEvent(td_ref: any, key: any, tableId: number) {
-  let __TABLE_STATE = TABLE_STATE({ tableId });
+  let __TABLE_STATE = STATIC_TABLE_STATE({ tableId });
 
   let data: TABLE_DATA = __TABLE_STATE?.get();
 
