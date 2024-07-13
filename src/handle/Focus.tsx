@@ -1,5 +1,6 @@
 import { set } from "js-upsert";
 import { STATIC_TABLE_STATE, TABLE_DATA } from "../utils/states";
+import { useCallback } from "react";
 
 export function __FOCUS_HANDLER({
   td_ref,
@@ -10,7 +11,7 @@ export function __FOCUS_HANDLER({
   table_ref: any;
   tableId: number;
 }) {
-  return () => {
+  return useCallback(() => {
     let __TABLE_STATE = STATIC_TABLE_STATE({ tableId });
     let data: TABLE_DATA = __TABLE_STATE?.get();
 
@@ -32,6 +33,7 @@ export function __FOCUS_HANDLER({
       }
     }
 
+    /*
     if (CurrentCell) {
       let FOCUSABLE_ELEMENT = CurrentCell.querySelector("input, button");
 
@@ -50,8 +52,20 @@ export function __FOCUS_HANDLER({
         //   // table_ref.current.focus();
         // }
       }
+
+      if (table_ref?.current) {
+        // CurrentCell.scrollIntoView({
+        //   behavior: "smooth",
+        //   block: "nearest",
+        // });
+        // table_ref.current.scrollTop =
+        //   CurrentCell.offsetTop - table_ref.current.offsetTop;
+      }
     }
-  };
+
+
+    */
+  }, []);
 }
 
 export function setFocus(ref: any, tableId: number) {

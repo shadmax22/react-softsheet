@@ -1,6 +1,7 @@
 import React from "react";
-import { setter } from "./Select";
+import { setter } from "./Select/Select";
 import { set, upsert } from "js-upsert";
+import { selectOption } from "./Select/component/Options";
 
 export function Keydown(e: React.KeyboardEvent, state: setter) {
   switch (e.key) {
@@ -18,5 +19,14 @@ export function Keydown(e: React.KeyboardEvent, state: setter) {
         ),
       });
       break;
+    case "Enter":
+      selectOption(state.data.options[state.data.hover].value, state);
+      break;
+    case "Escape":
+      state.set(upsert(state.data, set(false, "visible")));
+
+      break;
   }
+
+  e.stopPropagation();
 }

@@ -1,16 +1,19 @@
-import Select from "react-select";
 import { SoftSheet } from "./Table";
+// import { SoftSelect } from "./components/Filters/Select/Select";
 
-const options = [
-  { value: "chocolate", label: "Chocolate" },
-  { value: "chocolate", label: "Chocolate2" },
-  { value: "strawberry", label: "Strawberry" },
-  { value: "vanilla", label: "Vanilla" },
-];
+// const options = [
+//   { value: "chocolate", label: "Chocolate" },
+//   { value: "chocolate", label: "Chocolate2" },
+//   { value: "strawberry", label: "Strawberry" },
+//   { value: "vanilla", label: "Vanilla" },
+// ];
 
 function App() {
   const HEADER = {
-    col1: "Column 1",
+    col1: () => ({
+      view: <b>Green</b>,
+      props: {},
+    }),
     col2: "Column 2",
     col3: "Column 3",
   };
@@ -40,10 +43,175 @@ function App() {
       col2: "COL 2 VALUE",
       col3: "COL 2 VALUE",
     },
+    {
+      col1: "COL 1 VALUE",
+      col2: "COL 2 VALUE",
+      col3: "COL 2 VALUE",
+    },
+    {
+      col1: "COL 1 VALUE",
+      col2: "COL 2 VALUE",
+      col3: "COL 2 VALUE",
+    },
+    {
+      col1: "COL 1 VALUE",
+      col2: "COL 2 VALUE",
+      col3: "COL 2 VALUE",
+    },
+    {
+      col1: "COL 1 VALUE",
+      col2: "COL 2 VALUE",
+      col3: "COL 2 VALUE",
+    },
+    {
+      col1: "COL 1 VALUE",
+      col2: "COL 2 VALUE",
+      col3: "COL 2 VALUE",
+    },
+    {
+      col1: "COL 1 VALUE",
+      col2: "COL 2 VALUE",
+      col3: "COL 2 VALUE",
+    },
+    {
+      col1: "COL 1 VALUE",
+      col2: "COL 2 VALUE",
+      col3: "COL 2 VALUE",
+    },
+    {
+      col1: "COL 1 VALUE",
+      col2: "COL 2 VALUE",
+      col3: "COL 2 VALUE",
+    },
+    {
+      col1: "COL 1 VALUE",
+      col2: "COL 2 VALUE",
+      col3: "COL 2 VALUE",
+    },
+    {
+      col1: "COL 1 VALUE",
+      col2: "COL 2 VALUE",
+      col3: "COL 2 VALUE",
+    },
+    {
+      col1: "COL 1 VALUE",
+      col2: "COL 2 VALUE",
+      col3: "COL 2 VALUE",
+    },
+    {
+      col1: "COL 1 VALUE",
+      col2: "COL 2 VALUE",
+      col3: "COL 2 VALUE",
+    },
+    {
+      col1: "COL 1 VALUE",
+      col2: "COL 2 VALUE",
+      col3: "COL 2 VALUE",
+    },
+    {
+      col1: "COL 1 VALUE",
+      col2: "COL 2 VALUE",
+      col3: "COL 2 VALUE",
+    },
+    {
+      col1: "COL 1 VALUE",
+      col2: "COL 2 VALUE",
+      col3: "COL 2 VALUE",
+    },
+    {
+      col1: "COL 1 VALUE",
+      col2: "COL 2 VALUE",
+      col3: "COL 2 VALUE",
+    },
+    {
+      col1: "COL 1 VALUE",
+      col2: "COL 2 VALUE",
+      col3: "COL 2 VALUE",
+    },
+    {
+      col1: "COL 1 VALUE",
+      col2: "COL 2 VALUE",
+      col3: "COL 2 VALUE",
+    },
+    {
+      col1: "COL 1 VALUE",
+      col2: "COL 2 VALUE",
+      col3: "COL 2 VALUE",
+    },
+    {
+      col1: "COL 1 VALUE",
+      col2: "COL 2 VALUE",
+      col3: "COL 2 VALUE",
+    },
+    {
+      col1: "COL 1 VALUE",
+      col2: "COL 2 VALUE",
+      col3: "COL 2 VALUE",
+    },
+    {
+      col1: "COL 1 VALUE",
+      col2: "COL 2 VALUE",
+      col3: "COL 2 VALUE",
+    },
+    {
+      col1: "COL 1 VALUE",
+      col2: "COL 2 VALUE",
+      col3: "COL 2 VALUE",
+    },
+    {
+      col1: "COL 1 VALUE",
+      col2: "COL 2 VALUE",
+      col3: "COL 2 VALUE",
+    },
+    {
+      col1: "COL 1 VALUE",
+      col2: "COL 2 VALUE",
+      col3: "COL 2 VALUE",
+    },
+    {
+      col1: "COL 1 VALUE",
+      col2: "COL 2 VALUE",
+      col3: "COL 2 VALUE",
+    },
+    {
+      col1: "COL 1 VALUE",
+      col2: "COL 2 VALUE",
+      col3: "COL 2 VALUE",
+    },
+    {
+      col1: "COL 1 VALUE",
+      col2: "COL 2 VALUE",
+      col3: "COL 2 VALUE",
+    },
+    {
+      col1: "COL 1 VALUE",
+      col2: "COL 2 VALUE",
+      col3: "COL 2 VALUE",
+    },
+    {
+      col1: "COL 1 VALUE",
+      col2: "COL 2 VALUE",
+      col3: "COL 2 VALUE",
+    },
+    {
+      col1: "COL 1 VALUE",
+      col2: "COL 2 VALUE",
+      col3: "COL 2 VALUE",
+    },
+    {
+      col1: "COL 1 VALUE",
+      col2: "COL 2 VALUE",
+      col3: "COL 2 VALUE",
+    },
+    {
+      col1: "COL 1 VALUE",
+      col2: "COL 2 VALUE",
+      col3: "COL 2 VALUE",
+    },
   ];
 
   const Reflect = {
-    col1: () => <Select options={options}></Select>,
+    // col1: () => <SoftSelect></SoftSelect>,
     col2: () => ({
       view: <input />,
       listener: () => {
@@ -64,13 +232,35 @@ function App() {
         reflect={Reflect}
       ></Table> */}
       <SoftSheet
+        props={{
+          mainContainer: {},
+          tableHead: {
+            className: "bg-red-400",
+          },
+        }}
         autoFocus={true}
         header={HEADER}
         data={DATA}
         filter={{
-          col1: {
-            type: "select-date",
-            name: "green",
+          data: {
+            col1: {
+              type: "search",
+              options: [
+                { label: "Helo", value: "greeen" },
+                { label: "Hii", value: "greeenx" },
+              ],
+            },
+            col2: {
+              type: "select",
+              options: [
+                { label: "Helo", value: "greeen" },
+                { label: "Hii", value: "greeenx" },
+              ],
+              multiple: false,
+            },
+          },
+          onChange: (a, b) => {
+            console.log(a, b);
           },
         }}
         reflect={Reflect}

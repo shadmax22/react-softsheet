@@ -1,28 +1,30 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { __KEYDOWN_HANDLER } from "./handle/Keydown";
 import { __BLUR_HANDLER } from "./handle/Blur";
 import { __FOCUS_HANDLER } from "./handle/Focus";
 import { TABLE_DATA, TABLE_STATE } from "./utils/states";
 import { ts_Table } from "./Table";
-import { setClass } from "./utils/ease";
+import { setClass, softsheetStyle } from "./utils/ease";
 
 import { set } from "js-upsert";
 
 import { buildRows } from "./builder/buildRows";
+import { buildHeader } from "./builder/buildHeader";
+import { doFilter } from "./worker/Fiilter";
 // import { buildFilter } from "./builder/buildFilter";
 
 export function TableContainer(props: ts_Table) {
-  let [tableId, setTableId] = useState(0);
+  let [tableId] = useState(Math.ceil(Math.random() * 100000));
 
-  useEffect(() => {
-    setTableId(Math.ceil(Math.random() * 100000));
-  }, []);
+  // useEffect(() => {
+  //   setTableId(Math.ceil(Math.random() * 100000));
+  // }, []);
 
   let Ref = useRef<HTMLTableElement>(null);
   let TD_REF = useRef([]);
-  // let FILTER_REF = useRef([]);
+  let FILTER_REF = useRef([]);
 
-  let { header, data, reflect } = props;
+  let { header, data, reflect, serial_no } = props;
 
   let __TABLE_STATE = TABLE_STATE({
     initialLoad: {
@@ -39,8 +41,9 @@ export function TableContainer(props: ts_Table) {
     table_ref: Ref,
     tableId,
   });
-
-  const handleKeyDown = __KEYDOWN_HANDLER(TD_REF, tableId);
+  const handleKeyDown = useCallback(__KEYDOWN_HANDLER(TD_REF, tableId), [
+    TABLE_DATA.activeCells,
+  ]);
 
   useEffect(() => {
     __TABLE_STATE.upsert({
@@ -65,58 +68,68 @@ export function TableContainer(props: ts_Table) {
 
   if (!tableId) return <></>;
 
-  let VIEABLE_TABLE_DATA = data;
+  let VIEWABLE_TABLE_DATA = doFilter({
+    data,
+    tableId,
+    filterConfig: props.filter,
+  });
   if (!data || !header) return <></>;
 
-  // let PROPS_FETCHER_FOR_COMPONENT = (
-  //   component_name:
-  //     | "softsheet-main_container"
-  //     | "softsheet-main_table"
-  //     | "softsheet-main_table_thead"
-  //     | "softsheet-main_table_tbody"
-  // ) => (props?.props ?? {})[component_name] ?? {};
+  let PROPS_FETCHER_FOR_COMPONENT = (
+    component_name:
+      | "mainContainer"
+      | "mainTable"
+      | "tableHead"
+      | "tableBody"
+      | "tableRow"
+  ) => (props?.props ?? {})[component_name] ?? {};
 
   return (
     <>
       <div
+        {...PROPS_FETCHER_FOR_COMPONENT("mainContainer")}
         className={setClass(
           "softsheet-main_container",
-          `softsheet-template-${props?.template ?? "lightTemplate"}`,
-          props?.className ?? "lightTemplate"
+          softsheetStyle("softsheet-main_container"),
+          softsheetStyle(
+            `softsheet-template-${props?.template ?? "lightTemplate"}`
+          ),
+          props?.className ?? softsheetStyle("lightTemplate"),
+          PROPS_FETCHER_FOR_COMPONENT("mainContainer")?.className ?? ""
         )}
         onKeyDown={handleKeyDown}
         // onBlur={handleBlur}
+
         ref={Ref}
         tabIndex={-1}
       >
-        <table className={setClass("softsheet-main_table")}>
-          <thead className="">
-            <tr>
-              <th scope="col" className="">
-                #
-              </th>
-              {Object.keys(header).map((e: any) => {
-                return (
-                  <>
-                    <th scope="col" className="">
-                      {header[e]}
-                    </th>
-                  </>
-                );
-              })}
-            </tr>
-
+        <table
+          {...PROPS_FETCHER_FOR_COMPONENT("mainTable")}
+          className={setClass(
+            softsheetStyle("softsheet-main_table"),
+            PROPS_FETCHER_FOR_COMPONENT("mainTable")?.className ?? ""
+          )}
+        >
+          <thead {...PROPS_FETCHER_FOR_COMPONENT("tableHead")}>
             {/* <tr className="filter">
               <td></td>
               <td>
-                <SelectFilter></SelectFilter>
+                <SoftSelect></SoftSelect>
               </td>
               <td>
-                <SelectFilter></SelectFilter>
+                <SoftSelect></SoftSelect>
               </td>
             </tr> */}
+
+            {buildHeader({
+              header,
+              serial_no,
+              props,
+              FILTER_REF,
+              tableId,
+            })}
           </thead>
-          <tbody>
+          <tbody {...PROPS_FETCHER_FOR_COMPONENT("tableBody")}>
             {data?.length == 0 && (
               <tr>
                 <td colSpan={Object.keys(header ?? {}).length + 1}>
@@ -129,9 +142,7 @@ export function TableContainer(props: ts_Table) {
               </tr>
             )}
 
-            {/* {props?.filter && buildFilter({ data: props, FILTER_REF, tableId })} */}
-
-            {(VIEABLE_TABLE_DATA ?? []).map((ROW: any, RowNumber: number) =>
+            {(VIEWABLE_TABLE_DATA ?? []).map((ROW: any, RowNumber: number) =>
               buildRows({
                 RowNumber,
                 ROW,
@@ -141,6 +152,8 @@ export function TableContainer(props: ts_Table) {
                 TABLE_DATA,
                 header,
                 type: "row",
+                serial_no,
+                rowProps: PROPS_FETCHER_FOR_COMPONENT("tableRow"),
               })
             )}
           </tbody>

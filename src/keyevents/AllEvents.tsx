@@ -133,9 +133,9 @@ export function up(tableId: number) {
     setCellActive({ row: (value: any) => value - 1, tableId });
   }
 
-  if (data.activeCells.row - 1 < 0) {
-    setCellActive({ row: maxRowLength, tableId });
-  }
+  // if (data.activeCells.row - 1 < 0) {
+  //   setCellActive({ row: maxRowLength, tableId });
+  // }
 }
 
 export function keyEnabled(stat: any, tableId: number) {

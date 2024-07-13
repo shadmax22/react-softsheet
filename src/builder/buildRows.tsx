@@ -1,7 +1,8 @@
 import React from "react";
 import { down, left, right, setCellActive, up } from "../keyevents/AllEvents";
-import { setClass } from "../utils/ease";
+import { setClass, softsheetStyle } from "../utils/ease";
 import { trackBlurablity } from "../handle/Blur";
+import { buildSerialNo } from "./buildSerialNo";
 
 export function buildRows({
   RowNumber,
@@ -12,6 +13,8 @@ export function buildRows({
   header,
   type,
   TD_REF,
+  serial_no = true,
+  rowProps,
 }: any) {
   let refSetter = (
     el: any,
@@ -33,8 +36,36 @@ export function buildRows({
 
   return (
     <>
-      <tr className={setClass(type == "filter" && "filter")}>
-        <td className={setClass("softsheet_main-count-no")}>{RowNumber + 1}</td>
+      <tr
+        {...rowProps}
+        className={setClass(
+          softsheetStyle(type == "filter" && "filter"),
+          rowProps?.className
+        )}
+      >
+        {/* {serial_no && (
+          <>
+            <td className={setClass(softsheetStyle("softsheet_main-count-no"))}>
+              {RowNumber + 1}
+            </td>
+          </>
+        )} */}
+
+        {
+          <>
+            {buildSerialNo({
+              serial_no_data: serial_no ?? {},
+              type: "row",
+              header,
+              value: RowNumber + 1,
+              row: ROW,
+              index: RowNumber,
+            })}
+            {/* <th scope="col" className="">
+              #
+            </th> */}
+          </>
+        }
         {Object.keys(header).map((e: any, i: number) => {
           let TD_INDEX = i + RowNumber * Object.keys(header).length;
 
@@ -43,6 +74,7 @@ export function buildRows({
             col: ROW[e],
             row: ROW,
             row_no: RowNumber + 1,
+            col_name: e,
             keyboard: {
               navigation: {
                 up: () => up(tableId),
@@ -78,6 +110,11 @@ export function buildRows({
           //     ? (reflect[e](REFLECT_PROPS) as ReflectProps)?.view
           //     : ROW[e];\
 
+          let CURRENT_CELL_CLASS =
+            RowNumber == TABLE_DATA.activeCells.row &&
+            i == TABLE_DATA.activeCells.col
+              ? `softsheet-active_cell softsheet-active_cell_anim-${TABLE_DATA?.prevActiveCells?.type ?? ""}`
+              : "";
           return (
             <>
               <td
@@ -91,10 +128,8 @@ export function buildRows({
                   )
                 }
                 className={setClass(
-                  RowNumber == TABLE_DATA.activeCells.row &&
-                    i == TABLE_DATA.activeCells.col
-                    ? `softsheet-active_cell softsheet-active_cell_anim-${TABLE_DATA?.prevActiveCells?.type ?? ""}`
-                    : "",
+                  softsheetStyle(CURRENT_CELL_CLASS),
+                  CURRENT_CELL_CLASS,
                   // IF CELL CLASS PROVIDED BY USER
                   IS_REFLECT_VIEW_PROVIDED("cellClass")
                     ? REFLECT_FUNCTION?.cellClass
@@ -114,7 +149,7 @@ export function buildRows({
                 {
                   // IF REFLECT IS APPLICABLE
                   IS_REFLECT_AVAILABLE && !IS_REFLECT_REACT
-                    ? REFLECT_FUNCTION?.view
+                    ? REFLECT_FUNCTION?.view ?? ROW[e]
                     : REFLECT_FUNCTION
                 }
               </td>

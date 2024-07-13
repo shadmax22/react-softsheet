@@ -15,16 +15,17 @@
     "jsx": "react-jsx",
 
     "outDir": "./dist",
-
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "declarationDir": "./dist/types",
-    "declaration": true
+    "declaration": true,
+    
   },
+  
   "include": ["src/**/*", "index.tsx"],
   "exclude": ["node_modules", "dist", "**/*.spec.ts"]
-
+  
 }

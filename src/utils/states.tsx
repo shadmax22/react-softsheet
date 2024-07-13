@@ -16,6 +16,9 @@ export interface TABLE_DATA {
     col: number;
     type: string;
   };
+  filter: {
+    [key: string]: (string | number) | (string | number)[];
+  }[];
 }
 
 export const TABLE_STATE = (data: { initialLoad?: any; tableId: number }) =>
@@ -32,6 +35,7 @@ export const TABLE_STATE = (data: { initialLoad?: any; tableId: number }) =>
           maxColumnLength: null,
           keyboard_events: true,
           data: {},
+          filter: {},
           ...data?.initialLoad,
         }
       : null

@@ -17,7 +17,9 @@ export function trackBlurablity(e: any, tableId: number) {
     __TABLE_STATE.upsert(set(true, "keyboard_events"));
     return;
   }
-  if (e.target.selectionStart > 0) {
+
+  console.log(e.target.selectionStart, e.target);
+  if (e.target.selectionStart > 0 || e.target.value != "") {
     if (__TABLE_STATE?.get()?.keyboard_events) {
       __TABLE_STATE.upsert(set(false, "keyboard_events"));
     }
