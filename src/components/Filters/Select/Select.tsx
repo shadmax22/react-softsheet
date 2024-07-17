@@ -58,6 +58,8 @@ const _FILTER_DIV = memo(({ mainFilter, setter }: any) => {
         activeElement.scrollIntoView({ behavior: "smooth", block: "nearest" });
       }
     }
+
+    console.log(setter.data.visible);
   }, [setter.data]);
 
   return createPortal(
@@ -69,8 +71,10 @@ const _FILTER_DIV = memo(({ mainFilter, setter }: any) => {
       )}
       onMouseLeave={() => showFilter(false)}
       style={{
-        width: (mainFilter?.current?.offsetWidth ?? "") + "px",
-        left: (mainFilter?.current?.getBoundingClientRect()?.left ?? "") + "px",
+        width: (mainFilter?.current?.offsetWidth + 12 ?? "") + "px",
+        left:
+          (mainFilter?.current?.getBoundingClientRect()?.left - 12 ?? "") +
+          "px",
         top: (mainFilter?.current?.getBoundingClientRect()?.top ?? "") + "px",
       }}
     >
@@ -128,6 +132,8 @@ export function SoftSelect(props: FilterProps) {
     setFilterData(upsert(_FILTER_DATA, set(stat, "visible")));
   };
 
+  const main_select_element = useRef<HTMLInputElement>(null);
+
   return (
     <>
       <div
@@ -141,6 +147,7 @@ export function SoftSelect(props: FilterProps) {
         <input
           style={{ height: 0, width: 0 }}
           onFocus={() => showFilter(true)}
+          ref={main_select_element}
         ></input>
         <div className={softsheetStyle("searchFilter gap-2")}>
           <Selected state={setter}></Selected>
@@ -150,6 +157,7 @@ export function SoftSelect(props: FilterProps) {
       {_FILTER_DATA?.visible && (
         <div key={1}>
           <_FILTER_DIV
+            mainInputRef={main_select_element}
             mainFilter={mainFilter}
             showFilter={showFilter}
             setter={setter}

@@ -18,7 +18,15 @@ export function trackBlurablity(e: any, tableId: number) {
     return;
   }
 
-  console.log(e.target.selectionStart, e.target);
+  // VALIDATE IF INPUT VALUE IS THERE OR NOT
+  if (
+    (!e.target.value || (e?.target?.value ?? "").trim() == "") &&
+    __TABLE_STATE?.get()?.keyboard_events
+  ) {
+    __TABLE_STATE.upsert(set(true, "keyboard_events"));
+    return;
+  }
+
   if (e.target.selectionStart > 0 || e.target.value != "") {
     if (__TABLE_STATE?.get()?.keyboard_events) {
       __TABLE_STATE.upsert(set(false, "keyboard_events"));

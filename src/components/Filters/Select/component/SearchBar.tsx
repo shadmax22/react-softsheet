@@ -12,6 +12,7 @@ export function SearchBar({ state }: { state: setter }) {
     });
     state.set(new_data);
   };
+
   return (
     <>
       <div className={softsheetStyle("filterOption-search sticky top-0")}>
@@ -21,6 +22,9 @@ export function SearchBar({ state }: { state: setter }) {
           className={softsheetStyle("filterOptions-search-input")}
           onKeyDown={(e) => {
             Keydown(e, state);
+          }}
+          onBlur={() => {
+            console.log("blurred search");
           }}
           onKeyUp={(e: any) => searchOption(e.target.value)}
         ></input>

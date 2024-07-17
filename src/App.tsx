@@ -1,3 +1,4 @@
+import { SoftSelect } from "./components/Filters/Select/Select";
 import { SoftSheet } from "./Table";
 // import { SoftSelect } from "./components/Filters/Select/Select";
 
@@ -211,7 +212,14 @@ function App() {
   ];
 
   const Reflect = {
-    // col1: () => <SoftSelect></SoftSelect>,
+    col1: () => (
+      <SoftSelect
+        options={[
+          { label: "green", value: "ur" },
+          { label: "greenx", value: "urx" },
+        ]}
+      ></SoftSelect>
+    ),
     col2: () => ({
       view: <input />,
       listener: () => {

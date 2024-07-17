@@ -2,6 +2,8 @@ import type { Meta, StoryObj } from "@storybook/react";
 
 import { SoftSheet } from "../Table";
 import { fn } from "@storybook/test";
+import { softsheetStyle } from "../utils/ease";
+// import { filter } from "lodash";
 
 const meta = {
   title: "Example/Table",
@@ -25,6 +27,7 @@ const basicDatas = {
     name: "Name",
     email: "Email",
   },
+  className: softsheetStyle("table_styled"),
 };
 
 const reflectDatas = {
@@ -40,9 +43,37 @@ const reflectDatas = {
   },
 };
 
+const filterDatas = {
+  ...basicDatas,
+
+  filter: {
+    data: {
+      name: {
+        type: "search" as "search",
+        options: [
+          { label: "Helo", value: "greeen" },
+          { label: "Hii", value: "greeenx" },
+        ],
+      },
+      email: {
+        type: "select" as "select",
+        options: [
+          { label: "Alice Johnson", value: "Alice Johnson" },
+          { label: "Charle", value: "greeenx" },
+        ],
+        multiple: true,
+      },
+    },
+    onChange: () => {},
+  },
+};
+
 export const Basic: Story = {
   args: basicDatas,
 };
-export const UsingReflect: Story = {
+export const Reflect: Story = {
   args: reflectDatas,
+};
+export const Filters: Story = {
+  args: filterDatas,
 };

@@ -15,9 +15,9 @@ export function __FOCUS_HANDLER({
     let __TABLE_STATE = STATIC_TABLE_STATE({ tableId });
     let data: TABLE_DATA = __TABLE_STATE?.get();
 
-    let CurrentCell = td_ref.current[
-      data.activeCells.col + data.activeCells.row * data.maxColumnLength
-    ] as any;
+    // let CurrentCell = td_ref.current[
+    //   data.activeCells.col + data.activeCells.row * data.maxColumnLength
+    // ] as any;
 
     if (data?.prevActiveCells) {
       let PrevCell = td_ref.current[
@@ -88,6 +88,9 @@ export function setFocus(ref: any, tableId: number) {
     if (FOCUSABLE_ELEMENT) {
       FOCUSABLE_ELEMENT.focus();
 
+      FOCUSABLE_ELEMENT.addEventListener("blur", () => {
+        console.log("INPUT BLURRED");
+      });
       // if (FOCUSABLE_ELEMENT?.tagName == "INPUT") {
       //   let length = FOCUSABLE_ELEMENT.value.length;
       //   FOCUSABLE_ELEMENT.setSelectionRange(length, length);
